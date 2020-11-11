@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from "react";
-
 interface ImageCropFeedbackProps {
   imageUrl: string;
   top: number;
@@ -35,15 +34,7 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
 
   return (
     <div>
-      <canvas
-        id="appCanvas"
-        ref={cnv}
-        width={600}
-        height={600}
-        onClick={(e) => {
-          alert(e.clientX);
-        }}
-      />
+      <canvas id="appCanvas" ref={cnv} width={600} height={600} />
       <img alt="cat" ref={img} src={props.imageUrl} className="hidden" />
     </div>
   );

@@ -10,12 +10,10 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
       </header>
       <ImageCropFeedback
-        width={600}
-        height={600}
         top={30}
         left={200}
-        right={200}
-        bottom={200}
+        right={500}
+        bottom={300}
         imageUrl="https://placekitten.com/600/600"
       />
     </div>

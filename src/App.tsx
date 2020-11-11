@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import logo from "./flown.svg";
 import "./App.css";
 import ImageCropFeedback from "./components/ImageCropFeedback";
-import { Values } from "./types/values";
+import { Values } from "./types/globals";
 
 function App() {
   const [values, setValues] = useState<Values>({
@@ -11,6 +11,16 @@ function App() {
     right: 500,
     bottom: 300,
   });
+
+  const onAreaSelect = (
+    top: number,
+    bottom: number,
+    left: number,
+    right: number
+  ) => {
+    setValues({ top, left, right, bottom });
+    console.log({ top, bottom, left, right });
+  };
 
   return (
     <div className="App">
@@ -23,6 +33,7 @@ function App() {
         right={values.right}
         bottom={values.bottom}
         imageUrl="https://placekitten.com/600/600"
+        onAreaSelect={onAreaSelect}
       />
     </div>
   );

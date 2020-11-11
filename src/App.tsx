@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./flown.svg";
+import "./App.css";
+import ImageCropFeedback from "./components/ImageCropFeedback";
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <ImageCropFeedback
+        width={600}
+        height={600}
+        top={30}
+        left={200}
+        right={200}
+        bottom={200}
+        imageUrl="https://placekitten.com/600/600"
+      />
     </div>
   );
 }

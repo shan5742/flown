@@ -5,7 +5,7 @@ import { ImageCropFeedbackProps, Values } from "../types/globals";
 export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   const { top, left, bottom, right, imageUrl } = props;
   const img = useRef(null);
-  const cnv = useRef(null);
+  const cnv = useRef<HTMLCanvasElement>(null);
   const [clicks, setClicks] = useState<number>(0);
   const [coords, setCoords] = useState<Values>({
     top: 0,
@@ -18,24 +18,26 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   const onUserClickedImage = (
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
-    const canvas = document.getElementById("appCanvas") as HTMLCanvasElement;
-    const canvasContext = canvas.getContext("2d");
+    const canvas = cnv.current;
+    if (canvas) {
+      const canvasContext = canvas.getContext("2d");
 
-    if (clicks === 0) {
-      setCoords({
-        top: e.clientY - canvasContext!.canvas.offsetTop,
-        left: e.clientX - canvasContext!.canvas.offsetLeft,
-        bottom: 0,
-        right: 0,
-      });
-      setClicks(clicks + 1);
-    } else if (clicks === 1) {
-      setCoords({
-        ...coords,
-        right: e.clientX - canvasContext!.canvas.offsetLeft,
-        bottom: e.clientY - canvasContext!.canvas.offsetTop,
-      });
-      setClicks(2);
+      if (clicks === 0) {
+        setCoords({
+          top: e.clientY - canvasContext!.canvas.offsetTop,
+          left: e.clientX - canvasContext!.canvas.offsetLeft,
+          bottom: 0,
+          right: 0,
+        });
+        setClicks(clicks + 1);
+      } else if (clicks === 1) {
+        setCoords({
+          ...coords,
+          right: e.clientX - canvasContext!.canvas.offsetLeft,
+          bottom: e.clientY - canvasContext!.canvas.offsetTop,
+        });
+        setClicks(2);
+      }
     }
   };
 
@@ -48,10 +50,8 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   }, [coords, props, clicks, drawn]);
 
   useEffect(() => {
-    const canvas = document.getElementById("appCanvas") as HTMLCanvasElement;
-    const canvasContext = canvas.getContext("2d");
-    if (canvasContext)
-      loadImage(imageUrl, canvasContext, { top, left, right, bottom });
+    const canvas = cnv.current;
+    if (canvas) loadImage(imageUrl, canvas, { top, left, right, bottom });
   }, [bottom, imageUrl, left, right, top]);
 
   return (
@@ -63,7 +63,7 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
         height={600}
         onClick={(e) => onUserClickedImage(e)}
       />
-      <img alt="cat" ref={img} src={props.imageUrl} className="hidden" />
+      <img alt="cat" ref={img} src={imageUrl} className="hidden" />
     </div>
   );
 }

@@ -1,9 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
-import { loadImage } from "../lib/loadImage";
+import { loadImage } from "../helpers/loadImage";
 import { ImageCropFeedbackProps, Values } from "../types/globals";
 
 export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
-  const { top, left, bottom, right, imageUrl } = props;
+  const { top, left, bottom, right, imageUrl, onAreaSelect } = props;
   const img = useRef(null);
   const cnv = useRef<HTMLCanvasElement>(null);
   const [clicks, setClicks] = useState<number>(0);
@@ -21,7 +21,6 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
     const canvas = cnv.current;
     if (canvas) {
       const canvasContext = canvas.getContext("2d");
-
       if (clicks === 0) {
         setCoords({
           top: e.clientY - canvasContext!.canvas.offsetTop,
@@ -44,10 +43,11 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   useEffect(() => {
     const { top, right, left, bottom } = coords;
     if (clicks === 2 && !drawn) {
-      props.onAreaSelect(top, bottom, left, right);
+      onAreaSelect(top, bottom, left, right);
       setDrawn(true);
+      setClicks(0);
     }
-  }, [coords, props, clicks, drawn]);
+  }, [coords, clicks, drawn, onAreaSelect]);
 
   useEffect(() => {
     const canvas = cnv.current;
@@ -57,7 +57,6 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   return (
     <div>
       <canvas
-        id="appCanvas"
         ref={cnv}
         width={600}
         height={600}

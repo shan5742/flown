@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import logo from "./flown.svg";
+import logo from "./images/flown.svg";
 import "./App.css";
 import ImageCropFeedback from "./components/ImageCropFeedback";
 import { Values } from "./types/globals";
+import CroppedImage from "./components/CroppedImage";
 
 function App() {
   const [values, setValues] = useState<Values>({
@@ -34,6 +35,13 @@ function App() {
         bottom={values.bottom}
         imageUrl="https://placekitten.com/600/600"
         onAreaSelect={onAreaSelect}
+      />
+      <h1>Result</h1>
+      <CroppedImage
+        top={values.top}
+        left={values.left}
+        right={values.right}
+        bottom={values.bottom}
       />
     </div>
   );

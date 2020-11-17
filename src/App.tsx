@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import logo from "./flown.svg";
 import "./App.css";
 import ImageCropFeedback from "./components/ImageCropFeedback";
 import { Values } from "./types/globals";
+
+const logo = require("./flown.svg");
 
 function App() {
   const [values, setValues] = useState<Values>({
@@ -19,7 +20,6 @@ function App() {
     right: number
   ) => {
     setValues({ top, left, right, bottom });
-    console.log({ top, bottom, left, right });
   };
 
   return (

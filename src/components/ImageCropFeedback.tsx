@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import { loadImage } from "../lib/loadImage";
+import { loadBlankImage } from "../lib/loadBlankImage";
 import { ImageCropFeedbackProps, Values } from "../types/globals";
+import "./style.css";
 
 export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   const { top, left, bottom, right, imageUrl } = props;
@@ -15,13 +17,19 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   });
   const [drawn, setDrawn] = useState<boolean>(false);
 
+  const handleNewSelection = () => {
+    setDrawn(false);
+    setClicks(0);
+    const canvas = cnv.current;
+    if (canvas) loadBlankImage(imageUrl, canvas);
+  };
+
   const onUserClickedImage = (
     e: React.MouseEvent<HTMLCanvasElement, MouseEvent>
   ) => {
     const canvas = cnv.current;
     if (canvas) {
       const canvasContext = canvas.getContext("2d");
-
       if (clicks === 0) {
         setCoords({
           top: e.clientY - canvasContext!.canvas.offsetTop,
@@ -55,7 +63,7 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
   }, [bottom, imageUrl, left, right, top]);
 
   return (
-    <div>
+    <div className="container">
       <canvas
         id="appCanvas"
         ref={cnv}
@@ -64,6 +72,7 @@ export default function ImageCropFeedback(props: ImageCropFeedbackProps) {
         onClick={(e) => onUserClickedImage(e)}
       />
       <img alt="cat" ref={img} src={imageUrl} className="hidden" />
+      <button onClick={handleNewSelection}>Make new selection</button>
     </div>
   );
 }
